@@ -1,4 +1,5 @@
 module.exports = {
   publicPath: "/toy-shop/",
-  outputDir: "dist"
+  outputDir: "dist",
+  lintOnSave: false,
 }
