@@ -38,10 +38,19 @@
 
     <div style="margin-top: 70px;">
       <div style="float: left;"><h4>새로 등록된 장난감</h4></div>
-      <div style="float: right;"><i class="el-icon-arrow-left"></i><i class="el-icon-arrow-right"></i></div>
+      <div style="float: right;">
+        <!-- 왼쪽 버튼 -->
+        <i class="el-icon-arrow-left" v-if="info.toyPage == 0" style="color:lightgray"></i>
+        <i class="el-icon-arrow-left" v-else @click="pagePre"></i>
+        <!-- 오른쪽 버튼 -->
+        <i class="el-icon-arrow-right" v-if="info.toyPage == 1" style="color:lightgray"></i>
+        <i class="el-icon-arrow-right" v-else @click="pageNext"></i>
+      </div>
     </div>
     <br><br>
-    <Card/>
+    <div class="newToy" v-for="(toy, idx) in info.newToy[info.toyPage]" :key="idx">
+      <card :toy="toy"/>
+    </div>
   </div>
     <MainFooter/>
 </template>
@@ -67,6 +76,21 @@ export default {
       mainImgHover: false,
       subImg1Hover: false,
       subImg2Hover: false,
+      toyPage: 0,
+      newToy: [[
+        {"title": "피규어", "pId": "1"},
+        {"title": "구슬", "pId": "2"},
+        {"title": "미니언즈", "pId": "3"},
+        {"title": "미니언즈 파리", "pId": "4"},
+        {"title": "오리들", "pId": "5"},
+      ], [
+        {"title": "물놀이", "pId": "6"},
+        {"title": "사자 인형", "pId": "7"},
+        {"title": "마리오", "pId": "8"},
+        {"title": "곰돌이 인형", "pId": "9"},
+        {"title": "분홍 주사위", "pId": "10"},
+      ]
+      ]
     })
 
     const mainImgHover = function () {
@@ -93,7 +117,15 @@ export default {
       } 
     }
 
-    return { info, mainImgHover, subImg1Hover, subImg2Hover }
+    const pagePre = function () {
+      info.toyPage = 0
+    }
+
+    const pageNext = function () {
+      info.toyPage = 1
+    }
+
+    return { info, mainImgHover, subImg1Hover, subImg2Hover, pagePre, pageNext }
   }
 };
 </script>
@@ -210,9 +242,14 @@ export default {
 }
 
 h4 {
-  /* margin-top: 70px;  */
   margin-bottom: 10px; 
   font-weight: 900;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.newToy {
+  display:inline;
+  margin-right: 15px;
+  text-align: center;
 }
 </style>
