@@ -1,6 +1,6 @@
 <template>
   <div class="main-footer">
-    <span>footer</span>
+    <span>Toy 2021</span>
   </div>
 </template>
 
@@ -13,10 +13,10 @@ export default {
 <style>
 .main-footer {
   width: 100%;
-  height: 70px;
-  bottom: 0;
+  height: 60px;
   text-align: center;
   margin-top: 50px;
-  background-color: lightgray;
+  background-color: #f3f2f2;
+  line-height: 62px;
 }
 </style>
