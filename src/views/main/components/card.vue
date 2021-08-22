@@ -11,9 +11,11 @@
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum delectus voluptatibus cupiditate aut</p>
     </div>
 
-    <div class="toy-title">{{ toy.title }}</div>
+   <div class="toy-title">{{ toy.title }}</div>
     </el-col>
   </el-row>
+
+
 </template>
 
 <script>
@@ -24,7 +26,7 @@ export default {
   setup(props){
     const info = reactive({
       imgUrl: '',
-      hover: false
+      hover: false,
     })
 
     info.imgUrl = require(`@/assets/images/${props.toy.pId}.jpg`)
@@ -85,4 +87,5 @@ export default {
   right: 2%;
   z-index: -1;
 }
+
 </style>

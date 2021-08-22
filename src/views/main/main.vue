@@ -1,5 +1,12 @@
 <template>
   <MainHeader/>
+  <!-- 상품 구매 모달 -->
+  <div class="box" v-if="info.imgClick" @click="imgClick">
+    <div>
+      <h1>임시 모달</h1>
+    </div>
+  </div>
+
   <div class="container">
     <div class="main-img-wrap">
       <img class="main-img" 
@@ -21,10 +28,11 @@
            @mouseenter="subImg1Hover"
            @mouseleave="subImg1Hover">
       <div v-if="info.subImg1Hover">
-        <span class="sub-img-title">행복한 양 인형</span>
+        <span class="sub-img-title">행복한 양</span>
         <p class="sub-img-text"> 
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum delectus voluptatibus cupiditate aut, eligendi aspernatur molestias fuga sint odio architecto reprehenderit numquam natus commodi alias doloribus soluta sapiente dolor? Sequi!</p>
       </div>
+
       <img class="sub-img2"
            src="@/assets/images/teddybear.jpg" 
            @mouseenter="subImg2Hover"
@@ -35,7 +43,7 @@
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum delectus voluptatibus cupiditate aut, eligendi aspernatur molestias fuga sint odio architecto reprehenderit numquam natus commodi alias doloribus soluta sapiente dolor? Sequi!</p>
       </div>
     </el-row>
-
+      
     <div style="margin-top: 70px;">
       <div style="float: left;"><h4>새로 등록된 장난감</h4></div>
       <div style="float: right;">
@@ -48,11 +56,13 @@
       </div>
     </div>
     <br><br>
-    <div class="newToy" v-for="(toy, idx) in info.newToy[info.toyPage]" :key="idx">
+    <div class="newToy" v-for="(toy, idx) in info.newToy[info.toyPage]" :key="idx" @click="imgClick(toy)">
       <card :toy="toy"/>
+
     </div>
   </div>
-    <MainFooter/>
+  
+  <MainFooter/>
 </template>
 
 <script>
@@ -76,6 +86,7 @@ export default {
       mainImgHover: false,
       subImg1Hover: false,
       subImg2Hover: false,
+      imgClick: false,
       toyPage: 0,
       newToy: [[
         {"title": "피규어", "pId": "1"},
@@ -125,7 +136,15 @@ export default {
       info.toyPage = 1
     }
 
-    return { info, mainImgHover, subImg1Hover, subImg2Hover, pagePre, pageNext }
+    const imgClick = function () {
+      if (info.imgClick) {
+        info.imgClick = false
+      } else {
+        info.imgClick = true
+      }
+    }
+
+    return { info, mainImgHover, subImg1Hover, subImg2Hover, pagePre, pageNext, imgClick }
   }
 };
 </script>
@@ -139,7 +158,6 @@ export default {
 }
 .sub-img-wrap {
   width: 100%;
-  /* margin: 10px auto; */
   position: relative;
 }
 
@@ -248,8 +266,31 @@ h4 {
 }
 
 .newToy {
-  display:inline;
+  display: inline;
   margin-right: 15px;
   text-align: center;
+}
+
+.box {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-transition: opacity 400ms ease-in;
+  -moz-transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
+  z-index: 1;
+}
+
+.box > div {
+  position: absolute;
+	top: 0;
+	width: 100%;
+	height: 50%;
+	padding: 16px;
+	background-color: white;
+  z-index: 1;
 }
 </style>
