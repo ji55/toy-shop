@@ -1,10 +1,26 @@
 <template>
   <MainHeader/>
   <!-- 상품 구매 모달 -->
-  <div class="box" v-if="info.imgClick" @click="imgClick">
-    <div>
-      <h1>임시 모달</h1>
-    </div>
+  <div class="box" v-if="info.imgClick" @click.prevent.self="imgClick">
+    <el-row>
+      <img :src="info.imgUrl" alt="" style="height:100%; width:50%;">
+      <div class="detail" style="margin-left: 5%; margin-top:1%; width:45%; height:100%;">
+        <h3>{{ info.title }}</h3>
+        <h5>{{ info.price }}
+          <span style="font-size:13px; text-decoration:line-through; margin-left:5px">{{ info.oldPrice }}</span>
+        </h5>
+        <hr>
+        <p>Count</p>
+        <button class="minusBtn" @click="minus"><i class="el-icon-remove-outline"></i></button>
+        <span>{{ info.count }}</span>
+        <button class="plusBtn" @click="plus"><i class="el-icon-circle-plus-outline"></i></button>
+        <br><br>
+        <p>Detail</p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam a necessitatibus nihil quaerat, odit accusantium ut. Delectus aperiam at, quidem id iure excepturi, ducimus fuga vero dignissimos voluptates incidunt ut.</p>
+        <button class="buyBtn">구매하기</button>
+        <button class="keepBtn"><i class="el-icon-shopping-cart-2"></i></button>
+      </div>
+    </el-row>
   </div>
 
   <div class="container">
@@ -66,7 +82,7 @@
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity';
+import { reactive } from '@vue/reactivity'
 import MainHeader from './components/main-header'
 import MainFooter from './components/main-footer'
 import Card from './components/card'
@@ -76,7 +92,7 @@ export default {
   components: {
     MainHeader,
     MainFooter,
-    Card
+    Card,
   },
   props: {
     msg: String,
@@ -88,18 +104,23 @@ export default {
       subImg2Hover: false,
       imgClick: false,
       toyPage: 0,
+      pId: '',
+      imgUrl: '',
+      oldPrice: '',
+      price: '',
+      count: 1,
       newToy: [[
-        {"title": "피규어", "pId": "1"},
-        {"title": "구슬", "pId": "2"},
-        {"title": "미니언즈", "pId": "3"},
-        {"title": "미니언즈 파리", "pId": "4"},
-        {"title": "오리들", "pId": "5"},
+        {"title": "피규어", "pId": "1", oldPrice: "80000", price: 55000},
+        {"title": "구슬", "pId": "2", oldPrice: "10000", price: 5000},
+        {"title": "미니언즈", "pId": "3", oldPrice: "30000", price: 25000},
+        {"title": "미니언즈 파리", "pId": "4", oldPrice: "23000", price: 20000},
+        {"title": "오리들", "pId": "5", oldPrice: "20000", price: 15000},
       ], [
-        {"title": "물놀이", "pId": "6"},
-        {"title": "사자 인형", "pId": "7"},
-        {"title": "마리오", "pId": "8"},
-        {"title": "곰돌이 인형", "pId": "9"},
-        {"title": "분홍 주사위", "pId": "10"},
+        {"title": "물놀이", "pId": "6", oldPrice: "10000", price: 8000},
+        {"title": "사자 인형", "pId": "7", oldPrice: "70000", price: 65000},
+        {"title": "마리오", "pId": "8", oldPrice: "90000", price: 54000},
+        {"title": "곰돌이 인형", "pId": "9", oldPrice: "76000", price: 67000},
+        {"title": "분홍 주사위", "pId": "10", oldPrice: "7000", price: 5500},
       ]
       ]
     })
@@ -129,22 +150,39 @@ export default {
     }
 
     const pagePre = function () {
-      info.toyPage = 0
+      info.toyPage = 0;
     }
 
     const pageNext = function () {
-      info.toyPage = 1
+      info.toyPage = 1;
     }
 
-    const imgClick = function () {
-      if (info.imgClick) {
-        info.imgClick = false
-      } else {
+    const imgClick = function (toy) {
+      if (toy.title) {
+        info.title = toy.title
+        info.imgUrl = require(`@/assets/images/${toy.pId}.jpg`)
+        info.oldPrice = toy.oldPrice
+        info.price = toy.price
         info.imgClick = true
+      } else {
+        info.imgClick = false
+        info.count = 1
       }
     }
 
-    return { info, mainImgHover, subImg1Hover, subImg2Hover, pagePre, pageNext, imgClick }
+    const minus = function (e) {
+      e.stopPropagation()
+      if (info.count > 1){
+        info.count -= 1
+      } 
+    }
+
+    const plus = function (e) {
+      e.stopPropagation()
+      info.count += 1
+    }
+
+    return { info, mainImgHover, subImg1Hover, subImg2Hover, pagePre, pageNext, imgClick, minus, plus }
   }
 };
 </script>
@@ -282,6 +320,7 @@ h4 {
   -moz-transition: opacity 400ms ease-in;
   transition: opacity 400ms ease-in;
   z-index: 1;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .box > div {
@@ -293,4 +332,57 @@ h4 {
 	background-color: white;
   z-index: 1;
 }
+
+.detail {
+  overflow: auto;
+  text-overflow: ellipsis;
+}
+
+.detail::-webkit-scrollbar {
+  width: 5px;
+}
+
+.detail::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+  border-radius: 10px;
+}
+
+.detail::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+i {
+  font-size: 25px;
+}
+
+.buyBtn {
+  width: 60%;
+  height: 13%;
+  margin-top: 1%;
+  border-radius: 4px;
+  background-color:#6E70FF;
+  color: white;
+  border: 0;
+}
+
+.keepBtn {
+  margin-left: 5%;
+  width: 25%;
+  height: 13%;
+  background-color:white;
+  border: 0;
+}
+
+.minusBtn {
+  margin-right: 20%;
+  background-color:white;
+  border: 0;
+}
+
+.plusBtn {
+  margin-left: 20%;
+  background-color:white;
+  border: 0;
+}
+
 </style>
