@@ -37,12 +37,12 @@
       <button class="main-img-btn">알아보기 →</button>
     </div>
 
-    <el-row class="sub-img sub-img-wrap">
+    <el-row class="sub-img-wrap">
       <img class="sub-img1"
            src="@/assets/images/happy.jpg" 
            style="margin-right:2%"
            @mouseenter="subImg1Hover"
-           @mouseleave="subImg1Hover">
+           @mouseleave="subImg1Hover" >
       <div v-if="info.subImg1Hover">
         <span class="sub-img-title">행복한 양</span>
         <p class="sub-img-text"> 
@@ -197,6 +197,7 @@ export default {
 .sub-img-wrap {
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .main-img {
@@ -249,7 +250,7 @@ export default {
   left: 5%;
 }
 
-.sub-img > img {
+.sub-img-wrap > img {
   width: 49%;
   height: 400px;
   margin-top: 10px;
@@ -273,6 +274,7 @@ export default {
   top: 30%;
   left: 3%;
   right: 53%;
+  overflow: hidden;
   z-index: -1;
 }
 
